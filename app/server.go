@@ -18,7 +18,7 @@ import (
 
 func InitializeServer(serverConfig config.ServerConfig, handlerContext *handler.HandlerContext) {
 	router := gin.Default()
-	router.LoadHTMLGlob("template/*")
+	// router.LoadHTMLGlob("template/*")
 	appRouter.InitializeRoutes(router, handlerContext)
 
 	srv := &http.Server{

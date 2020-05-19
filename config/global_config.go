@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"os"
+	"io/ioutil"
 
 	"github.com/kelseyhightower/envconfig"
 	"gopkg.in/yaml.v2"
@@ -33,14 +33,12 @@ func InitializeConfig() GlobalConfig {
 }
 
 func readFile(cfg *GlobalConfig) {
-	f, err := os.Open("config.yml")
+	f, err := ioutil.ReadFile("/Users/tien.tan/go/src/github.com/nhannhan159/weather-app-go/config/config.yml")
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
 
-	decoder := yaml.NewDecoder(f)
-	err = decoder.Decode(cfg)
+	err = yaml.Unmarshal(f, cfg)
 	if err != nil {
 		panic(err)
 	}

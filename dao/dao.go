@@ -16,7 +16,6 @@ func InitializeDao(dbConfig config.DatabaseConfig) *DaoContext {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
 
 	return &DaoContext{
 		DB:                db,
