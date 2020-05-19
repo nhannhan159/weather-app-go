@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nhannhan159/weather-app-go/dao"
 )
@@ -11,7 +14,9 @@ type WeatherHandler struct {
 
 func NewWeatherHandler(daoContext *dao.DaoContext) *WeatherHandler {
 	return &WeatherHandler{
-		repository: daoContext.WeatherRepository,
+		BaseHandler: BaseHandler{
+			repository: daoContext.WeatherRepository,
+		},
 	}
 }
 
@@ -20,6 +25,10 @@ func (handler WeatherHandler) HandleFindAll(context *gin.Context) {
 }
 
 func (handler WeatherHandler) HandleFindById(context *gin.Context) {
-	id := context.Param("id")
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		fmt.Println("id must be an integer")
+		context.JSON(400, "error")
+	}
 	context.JSON(200, handler.repository.FindById(id))
 }

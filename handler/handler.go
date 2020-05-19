@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/nhannhan159/weather-app-go/config"
 	"github.com/nhannhan159/weather-app-go/dao"
 	"github.com/nhannhan159/weather-app-go/dao/repository"
@@ -20,9 +21,9 @@ type HandlerContext struct {
 	WeatherHandler RestHandler
 }
 
-func InitializeHandler(globalConfig config.GlobalConfig, daoContext dao.DaoContext) *HandlerContext {
+func InitializeHandler(globalConfig config.GlobalConfig, daoContext *dao.DaoContext) *HandlerContext {
 	return &HandlerContext{
-		GlobalConfig: globalConfig,
-		WeatherHandler: 
+		GlobalConfig:   globalConfig,
+		WeatherHandler: NewWeatherHandler(daoContext),
 	}
 }

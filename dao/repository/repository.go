@@ -8,8 +8,8 @@ import (
 type Repository interface {
 	GetTableName() string
 	AutoMigrate()
-	FindAll() []model.DaoModel
-	FindById(id int) model.DaoModel
+	FindAll() []model.Weather
+	FindById(id int) model.Weather
 }
 
 type BaseRepository struct {

@@ -10,7 +10,11 @@ type WeatherRepository struct {
 }
 
 func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
-	repository := &WeatherRepository{BaseRepository: BaseRepository{db: db}}
+	repository := &WeatherRepository{
+		BaseRepository: BaseRepository{
+			db: db,
+		},
+	}
 	repository.AutoMigrate()
 	return repository
 }
@@ -32,7 +36,7 @@ func (repository WeatherRepository) FindAll() []model.Weather {
 	return weathers
 }
 
-func (repository WeatherRepository) FindAById(id int) model.Weather {
+func (repository WeatherRepository) FindById(id int) model.Weather {
 	weather := model.Weather{}
 	err := repository.db.Table(repository.GetTableName()).First(&weather).Error
 	if err != nil {

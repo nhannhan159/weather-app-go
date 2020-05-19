@@ -11,7 +11,7 @@ import (
 
 func main() {
 	globalConfig := config.InitializeConfig()
-	daoContext := dao.InitializeDao(configValue.Database)
-	handlerContext := handler.InitializeHandler(configValue, daoContext)
-	app.InitializeServer(handlerContext)
+	daoContext := dao.InitializeDao(globalConfig.Database)
+	handlerContext := handler.InitializeHandler(globalConfig, daoContext)
+	app.InitializeServer(globalConfig.Server, handlerContext)
 }

@@ -12,10 +12,11 @@ import (
 	"github.com/gin-gonic/gin"
 
 	appRouter "github.com/nhannhan159/weather-app-go/app/router"
+	"github.com/nhannhan159/weather-app-go/config"
 	"github.com/nhannhan159/weather-app-go/handler"
 )
 
-func InitializeServer(handlerContext *handler.HandlerContext) {
+func InitializeServer(serverConfig config.ServerConfig, handlerContext *handler.HandlerContext) {
 	router := gin.Default()
 	router.LoadHTMLGlob("template/*")
 	appRouter.InitializeRoutes(router, handlerContext)
