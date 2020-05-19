@@ -1,0 +1,26 @@
+version: "3"
+services:
+  weather-app:
+    image: golang:1.13
+    volumes:
+      - .:/go/src/github.com/nhannhan159/weather-app-go
+    working_dir: /go/src/github.com/nhannhan159/weather-app-go
+    command: go run main.go
+    links:
+      - mysql
+    ports:
+      - 8080:8080
+  zipkin-go:
+    image: openzipkin/zipkin
+    container_name: zipkin-go
+    ports:
+      - 9411:9411
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - /var/lib/mysql
