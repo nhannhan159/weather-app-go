@@ -15,6 +15,7 @@ func NewCityRepository(db *gorm.DB) *CityRepository {
 			db: db.Table("city"),
 		},
 	}
+	this.newEntity = this.cloneEntity
 	this.db.AutoMigrate(&model.City{})
 	return this
 }

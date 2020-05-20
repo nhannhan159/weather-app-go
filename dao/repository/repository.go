@@ -13,16 +13,13 @@ type Repository interface {
 }
 
 type BaseRepository struct {
-	db *gorm.DB
-}
-
-func (this BaseRepository) cloneEntity() model.DaoModel {
-	return nil
+	db        *gorm.DB
+	newEntity func() model.DaoModel
 }
 
 func (this BaseRepository) cloneEntities() []model.DaoModel {
 	slice := make([]model.DaoModel, 1)
-	slice[0] = this.cloneEntity()
+	slice[0] = this.newEntity()
 	return slice
 }
 
@@ -44,7 +41,7 @@ func (this BaseRepository) FindAll() ([]model.DaoModel, error) {
 }
 
 func (this BaseRepository) FindById(id int) (model.DaoModel, error) {
-	entity := this.cloneEntity()
+	entity := this.newEntity()
 	err := this.db.First(&entity).Error
 	if err != nil {
 		return nil, err
