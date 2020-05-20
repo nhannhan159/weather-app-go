@@ -21,7 +21,9 @@ func (this BaseRepository) cloneEntity() model.DaoModel {
 }
 
 func (this BaseRepository) cloneEntities() []model.DaoModel {
-	return nil
+	slice := make([]model.DaoModel, 1)
+	slice[0] = this.cloneEntity()
+	return slice
 }
 
 func (this *BaseRepository) Create(entity model.DaoModel) error {

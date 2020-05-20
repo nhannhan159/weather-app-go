@@ -22,9 +22,3 @@ func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
 func (this WeatherRepository) cloneEntity() model.DaoModel {
 	return &model.Weather{}
 }
-
-func (this WeatherRepository) cloneEntities() []model.DaoModel {
-	slice := make([]model.DaoModel, 1)
-	slice[0] = this.cloneEntity()
-	return slice
-}

@@ -22,9 +22,3 @@ func NewCityRepository(db *gorm.DB) *CityRepository {
 func (this CityRepository) cloneEntity() model.DaoModel {
 	return &model.City{}
 }
-
-func (this CityRepository) cloneEntities() []model.DaoModel {
-	slice := make([]model.DaoModel, 1)
-	slice[0] = this.cloneEntity()
-	return slice
-}
