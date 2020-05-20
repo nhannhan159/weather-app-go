@@ -1,9 +1,13 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
 
-func indexHandler(conext *gin.Context) {
-	conext.JSON(200, gin.H{
+	"github.com/gin-gonic/gin"
+)
+
+func indexHandler(context *gin.Context) {
+	context.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 	})
 }

@@ -16,7 +16,7 @@ import (
 	"github.com/nhannhan159/weather-app-go/service"
 )
 
-func InitializeServer(serverConfig config.ServerConfig, serviceContext *service.ServiceContext) {
+func InitializeServer(serverConfig config.ServerConfig, serviceContext *service.Context) {
 	router := gin.Default()
 	// router.LoadHTMLGlob("template/*")
 	appRouter.InitializeRoutes(router, serviceContext)

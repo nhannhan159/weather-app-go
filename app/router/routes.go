@@ -5,7 +5,7 @@ import (
 	"github.com/nhannhan159/weather-app-go/service"
 )
 
-func InitializeRoutes(router *gin.Engine, serviceContext *service.ServiceContext) {
+func InitializeRoutes(router *gin.Engine, serviceContext *service.Context) {
 	router.GET("/", indexHandler)
 	apiV1Group := router.Group("/api/v1")
 	{

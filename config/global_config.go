@@ -26,9 +26,11 @@ type GlobalConfig struct {
 // https://dev.to/ilyakaznacheev/a-clean-way-to-pass-configs-in-a-go-application-1g64
 func InitializeConfig() GlobalConfig {
 	var cfg GlobalConfig
+
 	readFile(&cfg)
 	readEnv(&cfg)
 	fmt.Printf("%+v", cfg)
+
 	return cfg
 }
 

@@ -2,49 +2,53 @@ package repository
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/nhannhan159/weather-app-go/model"
 )
 
 type Repository interface {
-	Create(entity model.DaoModel) error
-	Update(entity model.DaoModel) error
-	FindAll() ([]model.DaoModel, error)
-	FindById(id int) (model.DaoModel, error)
+	Create(entity interface{}) error
+	Update(entity interface{}) error
+	FindAll() ([]interface{}, error)
+	FindByID(id int) (interface{}, error)
 }
 
 type BaseRepository struct {
 	db        *gorm.DB
-	newEntity func() model.DaoModel
+	newEntity func() interface{}
 }
 
-func (this BaseRepository) cloneEntities() []model.DaoModel {
-	slice := make([]model.DaoModel, 1)
-	slice[0] = this.newEntity()
+func (repository BaseRepository) cloneEntities() []interface{} {
+	slice := make([]interface{}, 1)
+	slice[0] = repository.newEntity()
+
 	return slice
 }
 
-func (this *BaseRepository) Create(entity model.DaoModel) error {
+func (repository *BaseRepository) Create(entity interface{}) error {
 	return nil
 }
 
-func (this *BaseRepository) Update(entity model.DaoModel) error {
+func (repository *BaseRepository) Update(entity interface{}) error {
 	return nil
 }
 
-func (this BaseRepository) FindAll() ([]model.DaoModel, error) {
-	entities := this.cloneEntities()
-	err := this.db.Find(&entities).Error
+func (repository BaseRepository) FindAll() ([]interface{}, error) {
+	entities := repository.cloneEntities()
+	err := repository.db.Find(&entities).Error
+
 	if err != nil {
 		return nil, err
 	}
+
 	return entities, nil
 }
 
-func (this BaseRepository) FindById(id int) (model.DaoModel, error) {
-	entity := this.newEntity()
-	err := this.db.First(&entity).Error
+func (repository BaseRepository) FindByID(id int) (interface{}, error) {
+	entity := repository.newEntity()
+	err := repository.db.First(&entity).Error
+
 	if err != nil {
 		return nil, err
 	}
+
 	return entity, nil
 }

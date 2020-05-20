@@ -9,21 +9,21 @@ import (
 
 type RestService interface {
 	HandleFindAll(context *gin.Context)
-	HandleFindById(context *gin.Context)
+	HandleFindByID(context *gin.Context)
 }
 
 type BaseService struct {
 	repository repository.Repository
 }
 
-type ServiceContext struct {
+type Context struct {
 	GlobalConfig   config.GlobalConfig
 	CityService    RestService
 	WeatherService RestService
 }
 
-func InitializeService(globalConfig config.GlobalConfig, daoContext *dao.DaoContext) *ServiceContext {
-	return &ServiceContext{
+func InitializeService(globalConfig config.GlobalConfig, daoContext *dao.Context) *Context {
+	return &Context{
 		GlobalConfig:   globalConfig,
 		CityService:    NewCityService(daoContext),
 		WeatherService: NewWeatherService(daoContext),

@@ -17,9 +17,10 @@ func NewCityRepository(db *gorm.DB) *CityRepository {
 	}
 	this.newEntity = this.cloneEntity
 	this.db.AutoMigrate(&model.City{})
+
 	return this
 }
 
-func (this CityRepository) cloneEntity() model.DaoModel {
+func (repository CityRepository) cloneEntity() interface{} {
 	return &model.City{}
 }

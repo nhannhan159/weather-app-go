@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,7 @@ type WeatherService struct {
 	BaseService
 }
 
-func NewWeatherService(daoContext *dao.DaoContext) *WeatherService {
+func NewWeatherService(daoContext *dao.Context) *WeatherService {
 	return &WeatherService{
 		BaseService: BaseService{
 			repository: daoContext.WeatherRepository,
@@ -20,25 +21,29 @@ func NewWeatherService(daoContext *dao.DaoContext) *WeatherService {
 	}
 }
 
-func (this WeatherService) HandleFindAll(context *gin.Context) {
-	res, err := this.repository.FindAll()
+func (service WeatherService) HandleFindAll(context *gin.Context) {
+	res, err := service.repository.FindAll()
+
 	if err != nil {
-		context.JSON(400, err)
+		context.JSON(http.StatusBadRequest, err)
 		return
 	}
-	context.JSON(200, res)
+
+	context.JSON(http.StatusOK, res)
 }
 
-func (this WeatherService) HandleFindById(context *gin.Context) {
+func (service WeatherService) HandleFindByID(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		fmt.Println("id must be an integer")
-		context.JSON(400, "error")
+		context.JSON(http.StatusBadRequest, "error")
 	}
-	res, err2 := this.repository.FindById(id)
+
+	res, err2 := service.repository.FindByID(id)
 	if err2 != nil {
-		context.JSON(400, err2)
+		context.JSON(http.StatusBadRequest, err2)
 		return
 	}
-	context.JSON(200, res)
+
+	context.JSON(http.StatusOK, res)
 }

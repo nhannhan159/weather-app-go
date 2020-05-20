@@ -17,9 +17,10 @@ func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
 	}
 	this.newEntity = this.cloneEntity
 	this.db.AutoMigrate(&model.Weather{})
+
 	return this
 }
 
-func (this WeatherRepository) cloneEntity() model.DaoModel {
+func (repository WeatherRepository) cloneEntity() interface{} {
 	return &model.Weather{}
 }
