@@ -16,6 +16,7 @@ func NewCityRepository(db *gorm.DB) *CityRepository {
 		},
 	}
 	this.newEntity = this.cloneEntity
+	this.newEntities = this.cloneEntities
 	this.db.AutoMigrate(&model.City{})
 
 	return this
@@ -23,4 +24,8 @@ func NewCityRepository(db *gorm.DB) *CityRepository {
 
 func (repository CityRepository) cloneEntity() interface{} {
 	return &model.City{}
+}
+
+func (repository CityRepository) cloneEntities() interface{} {
+	return []model.City{}
 }

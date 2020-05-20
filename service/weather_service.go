@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -25,7 +24,7 @@ func (service WeatherService) HandleFindAll(context *gin.Context) {
 	res, err := service.repository.FindAll()
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, err)
+		context.JSON(http.StatusBadRequest, map[string]string{"msg": err.Error()})
 		return
 	}
 
@@ -35,13 +34,13 @@ func (service WeatherService) HandleFindAll(context *gin.Context) {
 func (service WeatherService) HandleFindByID(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
-		fmt.Println("id must be an integer")
-		context.JSON(http.StatusBadRequest, "error")
+		context.JSON(http.StatusBadRequest, map[string]string{"msg": "id must be an integer"})
+		return
 	}
 
 	res, err2 := service.repository.FindByID(id)
 	if err2 != nil {
-		context.JSON(http.StatusBadRequest, err2)
+		context.JSON(http.StatusBadRequest, map[string]string{"msg": err2.Error()})
 		return
 	}
 

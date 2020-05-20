@@ -10,6 +10,6 @@ func cityHandler(group *gin.RouterGroup, serviceContext *service.Context) {
 	cityGroup := group.Group("/city")
 	{
 		cityGroup.GET("/", cityService.HandleFindAll)
-		cityGroup.GET("/:ID", cityService.HandleFindByID)
+		cityGroup.GET("/:id", cityService.HandleFindByID)
 	}
 }

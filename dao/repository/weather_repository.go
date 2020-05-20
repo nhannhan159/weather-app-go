@@ -16,6 +16,7 @@ func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
 		},
 	}
 	this.newEntity = this.cloneEntity
+	this.newEntities = this.cloneEntities
 	this.db.AutoMigrate(&model.Weather{})
 
 	return this
@@ -23,4 +24,8 @@ func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
 
 func (repository WeatherRepository) cloneEntity() interface{} {
 	return &model.Weather{}
+}
+
+func (repository WeatherRepository) cloneEntities() interface{} {
+	return []model.Weather{}
 }

@@ -10,6 +10,6 @@ func weatherHandler(group *gin.RouterGroup, serviceContext *service.Context) {
 	weatherGroup := group.Group("/weather")
 	{
 		weatherGroup.GET("/", weatherService.HandleFindAll)
-		weatherGroup.GET("/:ID", weatherService.HandleFindByID)
+		weatherGroup.GET("/:id", weatherService.HandleFindByID)
 	}
 }
