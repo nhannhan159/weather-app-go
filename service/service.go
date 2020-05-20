@@ -1,4 +1,4 @@
-package handler
+package service
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,23 +7,25 @@ import (
 	"github.com/nhannhan159/weather-app-go/dao/repository"
 )
 
-type RestHandler interface {
+type RestService interface {
 	HandleFindAll(context *gin.Context)
 	HandleFindById(context *gin.Context)
 }
 
-type BaseHandler struct {
+type BaseService struct {
 	repository repository.Repository
 }
 
-type HandlerContext struct {
+type ServiceContext struct {
 	GlobalConfig   config.GlobalConfig
-	WeatherHandler RestHandler
+	CityService    RestService
+	WeatherService RestService
 }
 
-func InitializeHandler(globalConfig config.GlobalConfig, daoContext *dao.DaoContext) *HandlerContext {
-	return &HandlerContext{
+func InitializeService(globalConfig config.GlobalConfig, daoContext *dao.DaoContext) *ServiceContext {
+	return &ServiceContext{
 		GlobalConfig:   globalConfig,
-		WeatherHandler: NewWeatherHandler(daoContext),
+		CityService:    NewCityService(daoContext),
+		WeatherService: NewWeatherService(daoContext),
 	}
 }

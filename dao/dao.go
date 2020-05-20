@@ -8,6 +8,7 @@ import (
 
 type DaoContext struct {
 	DB                *gorm.DB
+	CityRepository    repository.Repository
 	WeatherRepository repository.Repository
 }
 
@@ -19,6 +20,7 @@ func InitializeDao(dbConfig config.DatabaseConfig) *DaoContext {
 
 	return &DaoContext{
 		DB:                db,
+		CityRepository:    repository.NewCityRepository(db),
 		WeatherRepository: repository.NewWeatherRepository(db),
 	}
 }

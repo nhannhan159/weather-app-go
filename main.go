@@ -6,12 +6,12 @@ import (
 	"github.com/nhannhan159/weather-app-go/app"
 	"github.com/nhannhan159/weather-app-go/config"
 	"github.com/nhannhan159/weather-app-go/dao"
-	"github.com/nhannhan159/weather-app-go/handler"
+	"github.com/nhannhan159/weather-app-go/service"
 )
 
 func main() {
 	globalConfig := config.InitializeConfig()
 	daoContext := dao.InitializeDao(globalConfig.Database)
-	handlerContext := handler.InitializeHandler(globalConfig, daoContext)
-	app.InitializeServer(globalConfig.Server, handlerContext)
+	serviceContext := service.InitializeService(globalConfig, daoContext)
+	app.InitializeServer(globalConfig.Server, serviceContext)
 }

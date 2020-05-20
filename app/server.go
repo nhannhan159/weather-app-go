@@ -13,13 +13,13 @@ import (
 
 	appRouter "github.com/nhannhan159/weather-app-go/app/router"
 	"github.com/nhannhan159/weather-app-go/config"
-	"github.com/nhannhan159/weather-app-go/handler"
+	"github.com/nhannhan159/weather-app-go/service"
 )
 
-func InitializeServer(serverConfig config.ServerConfig, handlerContext *handler.HandlerContext) {
+func InitializeServer(serverConfig config.ServerConfig, serviceContext *service.ServiceContext) {
 	router := gin.Default()
 	// router.LoadHTMLGlob("template/*")
-	appRouter.InitializeRoutes(router, handlerContext)
+	appRouter.InitializeRoutes(router, serviceContext)
 
 	srv := &http.Server{
 		Addr:    ":" + serverConfig.Port,

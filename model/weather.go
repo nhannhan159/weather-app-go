@@ -7,6 +7,6 @@ type Weather struct {
 	Icon        string  `json:"icon"`
 }
 
-func (weather Weather) GetPrimaryKey() int {
-	return weather.Id
+func (this Weather) GetPrimaryKey() int {
+	return this.Id
 }

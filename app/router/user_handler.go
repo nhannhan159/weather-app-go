@@ -1,8 +1,8 @@
-package v1
+package router
 
 import "github.com/gin-gonic/gin"
 
-func User(group *gin.RouterGroup) {
+func userHandler(group *gin.RouterGroup) {
 	userGroup := group.Group("/user")
 	{
 		userGroup.GET("/", func(c *gin.Context) {

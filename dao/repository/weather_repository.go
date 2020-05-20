@@ -10,37 +10,21 @@ type WeatherRepository struct {
 }
 
 func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
-	repository := &WeatherRepository{
+	this := &WeatherRepository{
 		BaseRepository: BaseRepository{
-			db: db,
+			db: db.Table("weather"),
 		},
 	}
-	repository.AutoMigrate()
-	return repository
+	this.db.AutoMigrate(&model.Weather{})
+	return this
 }
 
-func (repository WeatherRepository) GetTableName() string {
-	return "weather"
+func (this WeatherRepository) cloneEntity() model.DaoModel {
+	return &model.Weather{}
 }
 
-func (repository WeatherRepository) AutoMigrate() {
-	repository.db.Table(repository.GetTableName()).AutoMigrate(&model.Weather{})
-}
-
-func (repository WeatherRepository) FindAll() []model.Weather {
-	weathers := []model.Weather{}
-	err := repository.db.Table(repository.GetTableName()).Find(&weathers).Error
-	if err != nil {
-		panic(err)
-	}
-	return weathers
-}
-
-func (repository WeatherRepository) FindById(id int) model.Weather {
-	weather := model.Weather{}
-	err := repository.db.Table(repository.GetTableName()).First(&weather).Error
-	if err != nil {
-		panic(err)
-	}
-	return weather
+func (this WeatherRepository) cloneEntities() []model.DaoModel {
+	slice := make([]model.DaoModel, 1)
+	slice[0] = this.cloneEntity()
+	return slice
 }
