@@ -22,7 +22,7 @@ type httpManager struct {
 	appResources *domain.Resources
 }
 
-func NewHttpManager(config domain.ServerConfig) domain.IHttpManager {
+func NewHTTPManager(config domain.ServerConfig) domain.IHttpManager {
 	return &httpManager{
 		config:   config,
 		engine:   gin.Default(),
@@ -34,11 +34,11 @@ func (server *httpManager) RegisterHandler(handler domain.IRootHandler) {
 	server.handlers = append(server.handlers, handler)
 }
 
-func (server httpManager) RegisterResources(resources *domain.Resources) {
+func (server *httpManager) RegisterResources(resources *domain.Resources) {
 	server.appResources = resources
 }
 
-func (server httpManager) Run() {
+func (server *httpManager) Run() {
 	// Initialize templates
 	// router.LoadHTMLGlob("template/*")
 
@@ -78,6 +78,7 @@ func (server httpManager) Run() {
 	// the request it is currently handling
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("Server forced to shutdown:", err)
 	}

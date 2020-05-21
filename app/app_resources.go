@@ -9,7 +9,7 @@ import (
 func (app *App) initializeResources() {
 	app.Resources = &domain.Resources{
 		DaoManager:  dao.NewDaoManager(app.GlobalConfig.Database),
-		HTTPManager: http.NewHttpManager(app.GlobalConfig.Server),
+		HTTPManager: http.NewHTTPManager(app.GlobalConfig.Server),
 	}
 }
 
