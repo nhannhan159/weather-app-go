@@ -1,4 +1,4 @@
-package app
+package http
 
 import (
 	"context"
@@ -9,21 +9,51 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/nhannhan159/weather-app-go/domain"
 
-	appRouter "github.com/nhannhan159/weather-app-go/app/router"
-	"github.com/nhannhan159/weather-app-go/config"
-	"github.com/nhannhan159/weather-app-go/service"
+	"github.com/gin-gonic/gin"
+	"github.com/nhannhan159/weather-app-go/http/middleware"
 )
 
-func InitializeServer(serverConfig config.ServerConfig, serviceContext *service.Context) {
-	router := gin.Default()
-	// router.LoadHTMLGlob("template/*")
-	appRouter.InitializeRoutes(router, serviceContext)
+type httpManager struct {
+	engine       *gin.Engine
+	config       domain.ServerConfig
+	handlers     []domain.IRootHandler
+	appResources *domain.Resources
+}
 
+func NewHttpManager(config domain.ServerConfig) domain.IHttpManager {
+	return &httpManager{
+		config:   config,
+		engine:   gin.Default(),
+		handlers: []domain.IRootHandler{},
+	}
+}
+
+func (server *httpManager) RegisterHandler(handler domain.IRootHandler) {
+	server.handlers = append(server.handlers, handler)
+}
+
+func (server httpManager) RegisterResources(resources *domain.Resources) {
+	server.appResources = resources
+}
+
+func (server httpManager) Run() {
+	// Initialize templates
+	// router.LoadHTMLGlob("template/*")
+
+	// Initialize middleware
+	server.engine.Use(middleware.ResourcesMiddleware(server.appResources))
+
+	// Initialize handlers
+	for _, rootHandler := range server.handlers {
+		rootHandler.Handle(server.engine)
+	}
+
+	// Initialize server
 	srv := &http.Server{
-		Addr:    ":" + serverConfig.Port,
-		Handler: router,
+		Addr:    ":" + server.config.Port,
+		Handler: server.engine,
 	}
 
 	// Initializing the server in a goroutine so that

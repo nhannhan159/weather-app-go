@@ -1,48 +1,30 @@
 package service
 
 import (
-	"net/http"
-	"strconv"
-
-	"github.com/gin-gonic/gin"
 	"github.com/nhannhan159/weather-app-go/dao"
+	"github.com/nhannhan159/weather-app-go/domain"
 )
 
-type WeatherService struct {
-	BaseService
+type IWeatherService interface {
+	domain.IService
 }
 
-func NewWeatherService(daoContext *dao.Context) *WeatherService {
-	return &WeatherService{
-		BaseService: BaseService{
-			repository: daoContext.WeatherRepository,
+type weatherService struct {
+	baseService
+}
+
+func NewWeatherService(weatherRepository dao.IWeatherRepository) IWeatherService {
+	return &weatherService{
+		baseService: baseService{
+			repository: weatherRepository,
 		},
 	}
 }
 
-func (service WeatherService) HandleFindAll(context *gin.Context) {
-	res, err := service.repository.FindAll()
-
-	if err != nil {
-		context.JSON(http.StatusBadRequest, map[string]string{"msg": err.Error()})
-		return
-	}
-
-	context.JSON(http.StatusOK, res)
+func (service weatherService) FindAll(resources *domain.Resources) (interface{}, error) {
+	return service.repository.FindAll()
 }
 
-func (service WeatherService) HandleFindByID(context *gin.Context) {
-	id, err := strconv.Atoi(context.Param("id"))
-	if err != nil {
-		context.JSON(http.StatusBadRequest, map[string]string{"msg": "id must be an integer"})
-		return
-	}
-
-	res, err2 := service.repository.FindByID(id)
-	if err2 != nil {
-		context.JSON(http.StatusBadRequest, map[string]string{"msg": err2.Error()})
-		return
-	}
-
-	context.JSON(http.StatusOK, res)
+func (service weatherService) FindByID(resources *domain.Resources, id int) (interface{}, error) {
+	return service.repository.FindByID(id)
 }
