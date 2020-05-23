@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nhannhan159/weather-app-go/domain"
 )
@@ -19,5 +21,10 @@ func (handler *baseHandler) getResourcesFromContext(ctx *gin.Context) *domain.Re
 	if !exists {
 		panic("cannot get resources from context")
 	}
+
 	return res.(*domain.Resources)
+}
+
+func (handler *baseHandler) handleBabRequest(ctx *gin.Context, err error) {
+	ctx.JSON(http.StatusBadRequest, map[string]string{"msg": err.Error()})
 }

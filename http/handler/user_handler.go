@@ -28,5 +28,4 @@ func (handler *userHandler) HandleGroup(routerGroup *gin.RouterGroup) {
 			})
 		})
 	}
-
 }

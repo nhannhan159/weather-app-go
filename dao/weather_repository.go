@@ -16,7 +16,7 @@ type weatherRepository struct {
 func NewWeatherRepository(daoManager domain.IDaoManager) IWeatherRepository {
 	this := &weatherRepository{
 		BaseRepository: BaseRepository{
-			db: daoManager.GetDb().Table(domain.TableWeather),
+			db: daoManager.GetDB().Table(domain.TableWeather),
 		},
 	}
 	return this
@@ -32,6 +32,10 @@ func (repository *weatherRepository) Create(entity interface{}) error {
 
 func (repository *weatherRepository) Update(entity interface{}) error {
 	return nil
+}
+
+func (repository *weatherRepository) Delete(id int) error {
+	panic("implement me")
 }
 
 func (repository weatherRepository) FindAll() (interface{}, error) {

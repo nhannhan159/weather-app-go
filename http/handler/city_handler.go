@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -33,9 +34,11 @@ func (handler *cityHandler) HandleGroup(group *gin.RouterGroup) {
 }
 
 func (handler *cityHandler) handleFindAll(ctx *gin.Context) {
+	resources := handler.getResourcesFromContext(ctx)
+	resources.Logger.Info("test logger")
 	res, err := handler.cityService.FindAll(handler.getResourcesFromContext(ctx))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, map[string]string{"msg": err.Error()})
+		handler.handleBabRequest(ctx, err)
 		return
 	}
 
@@ -45,13 +48,13 @@ func (handler *cityHandler) handleFindAll(ctx *gin.Context) {
 func (handler *cityHandler) handleFindByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, map[string]string{"msg": "id must be an integer"})
+		handler.handleBabRequest(ctx, errors.New("id must be an integer"))
 		return
 	}
 
 	res, err2 := handler.cityService.FindByID(handler.getResourcesFromContext(ctx), id)
 	if err2 != nil {
-		ctx.JSON(http.StatusBadRequest, map[string]string{"msg": err2.Error()})
+		handler.handleBabRequest(ctx, err2)
 		return
 	}
 

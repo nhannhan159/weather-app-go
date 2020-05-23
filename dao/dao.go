@@ -15,6 +15,7 @@ func NewDaoManager(dbConfig domain.DatabaseConfig) domain.IDaoManager {
 	if err != nil {
 		panic(err)
 	}
+
 	return &daoManager{
 		db:           db,
 		repositories: []domain.IRepository{},
@@ -26,10 +27,11 @@ func initializeDb(dbConfig domain.DatabaseConfig) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return db, nil
 }
 
-func (dao daoManager) GetDb() *gorm.DB {
+func (dao daoManager) GetDB() *gorm.DB {
 	return dao.db
 }
 

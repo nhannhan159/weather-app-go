@@ -16,7 +16,7 @@ type cityRepository struct {
 func NewCityRepository(daoManager domain.IDaoManager) ICityRepository {
 	this := &cityRepository{
 		BaseRepository: BaseRepository{
-			db: daoManager.GetDb().Table(domain.TableCity),
+			db: daoManager.GetDB().Table(domain.TableCity),
 		},
 	}
 	return this
@@ -32,6 +32,10 @@ func (repository *cityRepository) Create(entity interface{}) error {
 
 func (repository *cityRepository) Update(entity interface{}) error {
 	return nil
+}
+
+func (repository *cityRepository) Delete(id int) error {
+	panic("implement me")
 }
 
 func (repository cityRepository) FindAll() (interface{}, error) {

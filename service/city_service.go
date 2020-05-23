@@ -28,3 +28,15 @@ func (service cityService) FindAll(resources *domain.Resources) (interface{}, er
 func (service cityService) FindByID(resources *domain.Resources, id int) (interface{}, error) {
 	return service.repository.FindByID(id)
 }
+
+func (service cityService) Create(resources *domain.Resources, entity interface{}) (interface{}, error) {
+	panic("implement me")
+}
+
+func (service cityService) Update(resources *domain.Resources, entity interface{}) (interface{}, error) {
+	panic("implement me")
+}
+
+func (service cityService) Delete(resources *domain.Resources, id int) (interface{}, error) {
+	panic("implement me")
+}

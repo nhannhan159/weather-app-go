@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -23,6 +24,11 @@ type httpManager struct {
 }
 
 func NewHTTPManager(config domain.ServerConfig) domain.IHttpManager {
+	gin.DisableConsoleColor()
+
+	f, _ := os.OpenFile("gin.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	gin.DefaultWriter = io.MultiWriter(os.Stdout, f)
+
 	return &httpManager{
 		config:   config,
 		engine:   gin.Default(),
@@ -44,6 +50,7 @@ func (server *httpManager) Run() {
 
 	// Initialize middleware
 	server.engine.Use(middleware.ResourcesMiddleware(server.appResources))
+	server.engine.Use(middleware.LoggerMiddleware())
 
 	// Initialize handlers
 	for _, rootHandler := range server.handlers {
