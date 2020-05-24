@@ -10,10 +10,28 @@ import (
 type baseHandler struct {
 }
 
-func (handler *baseHandler) Handle(router *gin.Engine) {
+type baseRestHandler struct {
+	baseHandler
 }
 
-func (handler *baseHandler) HandleGroup(routerGroup *gin.RouterGroup) {
+func (handler *baseRestHandler) HandleFindAll(ctx *gin.Context) {
+	panic("not yet implemented")
+}
+
+func (handler *baseRestHandler) HandleFindByID(ctx *gin.Context) {
+	panic("not yet implemented")
+}
+
+func (handler *baseRestHandler) HandleCreate(ctx *gin.Context) {
+	panic("not yet implemented")
+}
+
+func (handler *baseRestHandler) HandleUpdate(ctx *gin.Context) {
+	panic("not yet implemented")
+}
+
+func (handler *baseRestHandler) HandleDelete(ctx *gin.Context) {
+	panic("not yet implemented")
 }
 
 func (handler *baseHandler) getResourcesFromContext(ctx *gin.Context) *domain.Resources {

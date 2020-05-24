@@ -5,18 +5,22 @@ import (
 	"github.com/nhannhan159/weather-app-go/domain"
 )
 
-type daoManager struct {
+type baseRepository struct {
+	db *gorm.DB
+}
+
+type DaoManager struct {
 	db           *gorm.DB
 	repositories []domain.IRepository
 }
 
-func NewDaoManager(dbConfig domain.DatabaseConfig) domain.IDaoManager {
+func NewDaoManager(dbConfig domain.DatabaseConfig) *DaoManager {
 	db, err := initializeDb(dbConfig)
 	if err != nil {
 		panic(err)
 	}
 
-	return &daoManager{
+	return &DaoManager{
 		db:           db,
 		repositories: []domain.IRepository{},
 	}
@@ -31,21 +35,21 @@ func initializeDb(dbConfig domain.DatabaseConfig) (*gorm.DB, error) {
 	return db, nil
 }
 
-func (dao daoManager) GetDB() *gorm.DB {
+func (dao *DaoManager) GetDB() *gorm.DB {
 	return dao.db
 }
 
-func (dao daoManager) AddRepository(repository domain.IRepository) {
+func (dao *DaoManager) AddRepository(repository domain.IRepository) {
 	dao.repositories = append(dao.repositories, repository)
 }
 
-func (dao *daoManager) AutoMigrate() {
+func (dao *DaoManager) AutoMigrate() {
 	for _, repository := range dao.repositories {
 		repository.AutoMigrate()
 	}
 }
 
-func (dao *daoManager) TearDown() {
+func (dao *DaoManager) TearDown() {
 	err := dao.db.Close()
 	if err != nil {
 		panic(err)

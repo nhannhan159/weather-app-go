@@ -7,33 +7,26 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nhannhan159/weather-app-go/domain"
-	"github.com/nhannhan159/weather-app-go/service"
+	"github.com/nhannhan159/weather-app-go/model"
 )
 
-type IWeatherHandler interface {
-	domain.IHandler
+type IWeatherService interface {
+	FindAll(*domain.Resources) ([]model.Weather, error)
+	FindByID(*domain.Resources, int) (*model.Weather, error)
 }
 
-type weatherHandler struct {
-	baseHandler
-	weatherService service.IWeatherService
+type WeatherHandler struct {
+	baseRestHandler
+	weatherService IWeatherService
 }
 
-func NewWeatherHandler(weatherService service.IWeatherService) IWeatherHandler {
-	return &weatherHandler{
+func NewWeatherHandler(weatherService IWeatherService) *WeatherHandler {
+	return &WeatherHandler{
 		weatherService: weatherService,
 	}
 }
 
-func (handler *weatherHandler) HandleGroup(group *gin.RouterGroup) {
-	cityGroup := group.Group("/weather")
-	{
-		cityGroup.GET("/", handler.handleFindAll)
-		cityGroup.GET("/:id", handler.handleFindByID)
-	}
-}
-
-func (handler *weatherHandler) handleFindAll(ctx *gin.Context) {
+func (handler *WeatherHandler) HandleFindAll(ctx *gin.Context) {
 	res, err := handler.weatherService.FindAll(handler.getResourcesFromContext(ctx))
 	if err != nil {
 		handler.handleBabRequest(ctx, err)
@@ -43,7 +36,7 @@ func (handler *weatherHandler) handleFindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func (handler *weatherHandler) handleFindByID(ctx *gin.Context) {
+func (handler *WeatherHandler) HandleFindByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		handler.handleBabRequest(ctx, errors.New("id must be an integer"))

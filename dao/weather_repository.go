@@ -5,40 +5,36 @@ import (
 	"github.com/nhannhan159/weather-app-go/model"
 )
 
-type IWeatherRepository interface {
-	domain.IRepository
+type WeatherRepository struct {
+	baseRepository
 }
 
-type weatherRepository struct {
-	BaseRepository
-}
-
-func NewWeatherRepository(daoManager domain.IDaoManager) IWeatherRepository {
-	this := &weatherRepository{
-		BaseRepository: BaseRepository{
+func NewWeatherRepository(daoManager domain.IDaoManager) *WeatherRepository {
+	this := &WeatherRepository{
+		baseRepository: baseRepository{
 			db: daoManager.GetDB().Table(domain.TableWeather),
 		},
 	}
 	return this
 }
 
-func (repository *weatherRepository) AutoMigrate() {
+func (repository *WeatherRepository) AutoMigrate() {
 	repository.db.AutoMigrate(&model.Weather{})
 }
 
-func (repository *weatherRepository) Create(entity interface{}) error {
-	return nil
-}
-
-func (repository *weatherRepository) Update(entity interface{}) error {
-	return nil
-}
-
-func (repository *weatherRepository) Delete(id int) error {
+func (repository *WeatherRepository) Create(entity *model.Weather) (*model.Weather, error) {
 	panic("implement me")
 }
 
-func (repository weatherRepository) FindAll() (interface{}, error) {
+func (repository *WeatherRepository) Update(entity *model.Weather) (*model.Weather, error) {
+	panic("implement me")
+}
+
+func (repository *WeatherRepository) Delete(id int) error {
+	panic("implement me")
+}
+
+func (repository WeatherRepository) FindAll() ([]model.Weather, error) {
 	var entities []model.Weather
 	err := repository.db.Find(&entities).Error
 	if err != nil {
@@ -48,7 +44,7 @@ func (repository weatherRepository) FindAll() (interface{}, error) {
 	return entities, nil
 }
 
-func (repository weatherRepository) FindByID(id int) (interface{}, error) {
+func (repository WeatherRepository) FindByID(id int) (*model.Weather, error) {
 	entity := &model.Weather{}
 	err := repository.db.First(entity).Error
 	if err != nil {

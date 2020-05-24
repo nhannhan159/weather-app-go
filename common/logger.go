@@ -9,26 +9,26 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func NewBizLogger() *zap.SugaredLogger {
-	writerSyncer := NewBizLoggerConfig()
-	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-	logger := zap.New(core)
-	defer logger.Sync()
-	return logger.Sugar()
-}
+//func NewBizLogger() *zap.SugaredLogger {
+//	writerSyncer := NewBizLoggerConfig()
+//	encoder := getEncoder()
+//	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
+//	logger := zap.New(core)
+//	defer logger.Sync()
+//	return logger.Sugar()
+//}
 
 func GinLoggerConfig() {
 
 }
 
-func InitLogger() {
-	writerSyncer := getLogWriter()
-	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-	logger := zap.New(core)
-	sugarLogger = logger.Sugar()
-}
+//func InitLogger() {
+//	writerSyncer := getLogWriter()
+//	encoder := getEncoder()
+//	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
+//	logger := zap.New(core)
+//	sugarLogger = logger.Sugar()
+//}
 
 func getEncoder() zapcore.Encoder {
 	return zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())

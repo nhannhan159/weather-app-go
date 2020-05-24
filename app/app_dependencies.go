@@ -2,28 +2,25 @@ package app
 
 import (
 	"github.com/nhannhan159/weather-app-go/dao"
-	"github.com/nhannhan159/weather-app-go/domain"
 	"github.com/nhannhan159/weather-app-go/http/handler"
 	"github.com/nhannhan159/weather-app-go/service"
 )
 
 type Repositories struct {
-	CityRepository    dao.ICityRepository
-	WeatherRepository dao.IWeatherRepository
+	CityRepository    *dao.CityRepository
+	WeatherRepository *dao.WeatherRepository
 }
 
 type Services struct {
-	CityService    service.ICityService
-	WeatherService service.IWeatherService
+	CityService    *service.CityService
+	WeatherService *service.WeatherService
 }
 
 type HTTPHandlers struct {
-	indexHandler       handler.IIndexHandler
-	userHandler        handler.IUserHandler
-	cityHandler        handler.ICityHandler
-	weatherHandler     handler.IWeatherHandler
-	apiV1Handler       handler.IApiV1Handler
-	registeredHandlers []domain.IHandler
+	indexHandler   *handler.IndexHandler
+	userHandler    *handler.UserHandler
+	cityHandler    *handler.CityHandler
+	weatherHandler *handler.WeatherHandler
 }
 
 func (app *App) initializeDependencies() {
@@ -38,6 +35,7 @@ func (app *App) initialRepositories() {
 
 	app.Resources.DaoManager.AddRepository(cityRepository)
 	app.Resources.DaoManager.AddRepository(weatherRepository)
+
 	app.Repositories = &Repositories{
 		CityRepository:    cityRepository,
 		WeatherRepository: weatherRepository,
@@ -56,17 +54,11 @@ func (app *App) initialHandlers() {
 	userHandler := handler.NewUserHandler()
 	cityHandler := handler.NewCityHandler(app.Services.CityService)
 	weatherHandler := handler.NewWeatherHandler(app.Services.WeatherService)
-	apiV1Handler := handler.NewApiV1Handler(userHandler, cityHandler, weatherHandler)
 
 	app.HTTPHandlers = &HTTPHandlers{
 		indexHandler:   indexHandler,
 		userHandler:    userHandler,
 		cityHandler:    cityHandler,
 		weatherHandler: weatherHandler,
-		apiV1Handler:   apiV1Handler,
-		registeredHandlers: []domain.IHandler{
-			indexHandler,
-			apiV1Handler,
-		},
 	}
 }

@@ -4,28 +4,18 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nhannhan159/weather-app-go/domain"
 )
 
-type IUserHandler interface {
-	domain.IHandler
-}
-
-type userHandler struct {
+type UserHandler struct {
 	baseHandler
 }
 
-func NewUserHandler() IUserHandler {
-	return &userHandler{}
+func NewUserHandler() *UserHandler {
+	return &UserHandler{}
 }
 
-func (handler *userHandler) HandleGroup(routerGroup *gin.RouterGroup) {
-	userGroup := routerGroup.Group("/user")
-	{
-		userGroup.GET("/", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"message": "user",
-			})
-		})
-	}
+func (handler *UserHandler) Handle(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "user",
+	})
 }

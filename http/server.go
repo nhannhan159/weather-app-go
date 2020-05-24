@@ -16,35 +16,34 @@ import (
 	"github.com/nhannhan159/weather-app-go/http/middleware"
 )
 
-type httpManager struct {
-	engine       *gin.Engine
-	config       domain.ServerConfig
-	handlers     []domain.IRootHandler
-	appResources *domain.Resources
+type HTTPManager struct {
+	engine            *gin.Engine
+	config            domain.ServerConfig
+	appResources      *domain.Resources
+	handlerCollection *domain.HandlerCollection
 }
 
-func NewHTTPManager(config domain.ServerConfig) domain.IHttpManager {
+func NewHTTPManager(config domain.ServerConfig) *HTTPManager {
 	gin.DisableConsoleColor()
 
 	f, _ := os.OpenFile("gin.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 	gin.DefaultWriter = io.MultiWriter(os.Stdout, f)
 
-	return &httpManager{
-		config:   config,
-		engine:   gin.Default(),
-		handlers: []domain.IRootHandler{},
+	return &HTTPManager{
+		config: config,
+		engine: gin.Default(),
 	}
 }
 
-func (server *httpManager) RegisterHandler(handler domain.IRootHandler) {
-	server.handlers = append(server.handlers, handler)
+func (server *HTTPManager) RegisterHandler(handlerCollection *domain.HandlerCollection) {
+	server.handlerCollection = handlerCollection
 }
 
-func (server *httpManager) RegisterResources(resources *domain.Resources) {
+func (server *HTTPManager) RegisterResources(resources *domain.Resources) {
 	server.appResources = resources
 }
 
-func (server *httpManager) Run() {
+func (server *HTTPManager) Run() {
 	// Initialize templates
 	// router.LoadHTMLGlob("template/*")
 
@@ -52,10 +51,8 @@ func (server *httpManager) Run() {
 	server.engine.Use(middleware.ResourcesMiddleware(server.appResources))
 	server.engine.Use(middleware.LoggerMiddleware())
 
-	// Initialize handlers
-	for _, rootHandler := range server.handlers {
-		rootHandler.Handle(server.engine)
-	}
+	// Initialize router
+	server.initializeRouter()
 
 	// Initialize server
 	srv := &http.Server{
