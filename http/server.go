@@ -10,6 +10,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/nhannhan159/weather-app-go/common"
+
 	"github.com/nhannhan159/weather-app-go/domain"
 
 	"github.com/gin-gonic/gin"
@@ -25,9 +27,7 @@ type HTTPManager struct {
 
 func NewHTTPManager(config domain.ServerConfig) *HTTPManager {
 	gin.DisableConsoleColor()
-
-	f, _ := os.OpenFile("gin.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
-	gin.DefaultWriter = io.MultiWriter(os.Stdout, f)
+	gin.DefaultWriter = io.MultiWriter(os.Stdout, common.NewGinLoggerConfig())
 
 	return &HTTPManager{
 		config: config,

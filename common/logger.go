@@ -1,6 +1,7 @@
 package common
 
 import (
+	"io"
 	"os"
 
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -9,29 +10,12 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-//func NewBizLogger() *zap.SugaredLogger {
-//	writerSyncer := NewBizLoggerConfig()
-//	encoder := getEncoder()
-//	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-//	logger := zap.New(core)
-//	defer logger.Sync()
-//	return logger.Sugar()
-//}
-
-func GinLoggerConfig() {
-
+func NewGinLogger() *zap.SugaredLogger {
+	return newLogger(NewGinLoggerConfig())
 }
 
-//func InitLogger() {
-//	writerSyncer := getLogWriter()
-//	encoder := getEncoder()
-//	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-//	logger := zap.New(core)
-//	sugarLogger = logger.Sugar()
-//}
-
-func getEncoder() zapcore.Encoder {
-	return zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+func NewBizLogger() *zap.SugaredLogger {
+	return newLogger(NewBizLoggerConfig())
 }
 
 func NewGinLoggerConfig() *lumberjack.Logger {
@@ -54,7 +38,13 @@ func NewBizLoggerConfig() *lumberjack.Logger {
 	}
 }
 
-func getLogWriter() zapcore.WriteSyncer {
-	file, _ := os.Create("./test.log")
-	return zapcore.AddSync(file)
+func newLogger(writer io.Writer) *zap.SugaredLogger {
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(writer)),
+		zap.InfoLevel,
+	)
+	logger := zap.New(core, zap.AddCaller(), zap.Development())
+	defer logger.Sync()
+	return logger.Sugar()
 }

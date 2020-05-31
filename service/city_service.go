@@ -24,21 +24,26 @@ func NewCityService(cityRepository ICityRepository) *CityService {
 }
 
 func (service CityService) FindAll(resources *domain.Resources) ([]model.City, error) {
+	resources.BizLogger.Infof("find all city")
 	return service.repository.FindAll()
 }
 
 func (service CityService) FindByID(resources *domain.Resources, id int) (*model.City, error) {
+	resources.BizLogger.Infof("find city by id: %v", id)
 	return service.repository.FindByID(id)
 }
 
 func (service CityService) Create(resources *domain.Resources, entity *model.City) (*model.City, error) {
+	resources.BizLogger.Infof("create city: %+v", entity)
 	return service.repository.Create(entity)
 }
 
 func (service CityService) Update(resources *domain.Resources, entity *model.City) (*model.City, error) {
+	resources.BizLogger.Infof("update city: %+v", entity)
 	return service.repository.Update(entity)
 }
 
 func (service CityService) Delete(resources *domain.Resources, id int) error {
+	resources.BizLogger.Infof("delete city by id: %v", id)
 	return service.repository.Delete(id)
 }
