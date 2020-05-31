@@ -2,6 +2,7 @@ package dao
 
 import (
 	"github.com/jinzhu/gorm"
+	"github.com/nhannhan159/weather-app-go/common"
 	"github.com/nhannhan159/weather-app-go/domain"
 )
 
@@ -14,7 +15,7 @@ type DaoManager struct {
 	repositories []domain.IRepository
 }
 
-func NewDaoManager(dbConfig domain.DatabaseConfig) *DaoManager {
+func NewDaoManager(dbConfig common.DatabaseConfig) *DaoManager {
 	db, err := initializeDb(dbConfig)
 	if err != nil {
 		panic(err)
@@ -26,7 +27,7 @@ func NewDaoManager(dbConfig domain.DatabaseConfig) *DaoManager {
 	}
 }
 
-func initializeDb(dbConfig domain.DatabaseConfig) (*gorm.DB, error) {
+func initializeDb(dbConfig common.DatabaseConfig) (*gorm.DB, error) {
 	db, err := gorm.Open(dbConfig.Dialect, dbConfig.DSN)
 	if err != nil {
 		return nil, err

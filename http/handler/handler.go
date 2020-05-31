@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	"github.com/nhannhan159/weather-app-go/common"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nhannhan159/weather-app-go/domain"
 )
@@ -35,7 +37,7 @@ func (handler *baseRestHandler) HandleDelete(ctx *gin.Context) {
 }
 
 func (handler *baseHandler) getResourcesFromContext(ctx *gin.Context) *domain.Resources {
-	res, exists := ctx.Get(domain.AppResources)
+	res, exists := ctx.Get(common.AppResources)
 	if !exists {
 		panic("cannot get resources from context")
 	}

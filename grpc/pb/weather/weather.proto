@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package weather;
+
+service WeatherService {
+    rpc GetWeather(WeatherRequest) returns (Weather) {}
+    rpc ListWeathers(WeatherRequest) returns (stream Weather) {}
+}
+
+message WeatherRequest {
+    int64 id = 1;
+}
+
+message Weather {
+    int64 id = 1;
+    string main = 2;
+    string description = 3;
+    string icon = 4;
+}

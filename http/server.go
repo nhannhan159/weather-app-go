@@ -20,12 +20,12 @@ import (
 
 type HTTPManager struct {
 	engine            *gin.Engine
-	config            domain.ServerConfig
+	config            common.ServerConfig
 	appResources      *domain.Resources
 	handlerCollection *domain.HandlerCollection
 }
 
-func NewHTTPManager(config domain.ServerConfig) *HTTPManager {
+func NewHTTPManager(config common.ServerConfig) *HTTPManager {
 	gin.DisableConsoleColor()
 	gin.DefaultWriter = io.MultiWriter(os.Stdout, common.NewGinLoggerConfig())
 

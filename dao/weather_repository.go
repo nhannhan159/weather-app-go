@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"github.com/nhannhan159/weather-app-go/common"
 	"github.com/nhannhan159/weather-app-go/domain"
 	"github.com/nhannhan159/weather-app-go/model"
 )
@@ -12,7 +13,7 @@ type WeatherRepository struct {
 func NewWeatherRepository(daoManager domain.IDaoManager) *WeatherRepository {
 	this := &WeatherRepository{
 		baseRepository: baseRepository{
-			db: daoManager.GetDB().Table(domain.TableWeather),
+			db: daoManager.GetDB().Table(common.TableWeather),
 		},
 	}
 	return this

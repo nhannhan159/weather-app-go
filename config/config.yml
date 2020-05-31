@@ -4,3 +4,8 @@ server:
 database:
   dialect: mysql
   dsn: root:root@/weather?charset=utf8
+grpc:
+  port: 50051
+  clients:
+    city_service: localhost:50051
+    weather_service: localhost:50051

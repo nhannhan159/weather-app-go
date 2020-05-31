@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/nhannhan159/weather-app-go/dao"
+	grpcHandler "github.com/nhannhan159/weather-app-go/grpc/handler"
 	"github.com/nhannhan159/weather-app-go/http/handler"
 	"github.com/nhannhan159/weather-app-go/service"
 )
@@ -23,10 +24,16 @@ type HTTPHandlers struct {
 	weatherHandler *handler.WeatherHandler
 }
 
+type GRPCHandlers struct {
+	cityHandler    *grpcHandler.CityHandler
+	weatherHandler *grpcHandler.WeatherHandler
+}
+
 func (app *App) initializeDependencies() {
 	app.initialRepositories()
 	app.initialServices()
 	app.initialHandlers()
+	app.initialGRPCHandlers()
 }
 
 func (app *App) initialRepositories() {
@@ -60,5 +67,12 @@ func (app *App) initialHandlers() {
 		userHandler:    userHandler,
 		cityHandler:    cityHandler,
 		weatherHandler: weatherHandler,
+	}
+}
+
+func (app *App) initialGRPCHandlers() {
+	app.GRPCHandlers = &GRPCHandlers{
+		cityHandler:    grpcHandler.NewCityHandler(app.Resources, app.Services.CityService),
+		weatherHandler: grpcHandler.NewWeatherHandler(app.Resources, app.Services.WeatherService),
 	}
 }

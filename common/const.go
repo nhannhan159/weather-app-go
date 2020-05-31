@@ -1,4 +1,4 @@
-package domain
+package common
 
 const (
 	TableCity    = "city"
