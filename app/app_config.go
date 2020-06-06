@@ -2,6 +2,7 @@ package app
 
 import (
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/nhannhan159/weather-app-go/common"
 
@@ -15,11 +16,12 @@ func (app *App) initializeConfig() {
 
 	readFile(&config)
 	readEnv(&config)
-	app.GlobalConfig = &config
+	app.GlobalConfig = config
 }
 
 func readFile(config *common.GlobalConfig) {
-	f, err := ioutil.ReadFile("/Users/tien.tan/go/src/github.com/nhannhan159/weather-app-go/config/config.yml")
+	path, _ := filepath.Abs("./config/config.yml")
+	f, err := ioutil.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}

@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -10,17 +11,18 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func NewGinLogger() *zap.SugaredLogger {
-	return newLogger(NewGinLoggerConfig())
+func NewGinLogger(config GlobalConfig) *zap.SugaredLogger {
+	return newLogger(NewGinLoggerConfig(config))
 }
 
-func NewBizLogger() *zap.SugaredLogger {
-	return newLogger(NewBizLoggerConfig())
+func NewBizLogger(config GlobalConfig) *zap.SugaredLogger {
+	return newLogger(NewBizLoggerConfig(config))
 }
 
-func NewGinLoggerConfig() *lumberjack.Logger {
+func NewGinLoggerConfig(config GlobalConfig) *lumberjack.Logger {
+	fileName := fmt.Sprintf("%s/logs/%s/gin.log", config.BaseDir, config.AppName)
 	return &lumberjack.Logger{
-		Filename:   "logs/gin.log",
+		Filename:   fileName,
 		MaxSize:    10,
 		MaxBackups: 100,
 		MaxAge:     30,
@@ -28,9 +30,10 @@ func NewGinLoggerConfig() *lumberjack.Logger {
 	}
 }
 
-func NewBizLoggerConfig() *lumberjack.Logger {
+func NewBizLoggerConfig(config GlobalConfig) *lumberjack.Logger {
+	fileName := fmt.Sprintf("%s/logs/%s/biz.log", config.BaseDir, config.AppName)
 	return &lumberjack.Logger{
-		Filename:   "logs/biz.log",
+		Filename:   fileName,
 		MaxSize:    10,
 		MaxBackups: 100,
 		MaxAge:     30,

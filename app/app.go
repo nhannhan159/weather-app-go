@@ -6,7 +6,7 @@ import (
 )
 
 type App struct {
-	GlobalConfig *common.GlobalConfig
+	GlobalConfig common.GlobalConfig
 	Resources    *domain.Resources
 	Repositories *Repositories
 	Services     *Services

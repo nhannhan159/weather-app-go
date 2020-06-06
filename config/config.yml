@@ -1,3 +1,5 @@
+app-name: weather-app
+base-dir: /Users/tien.tan
 server:
   host: 127.0.0.1
   port: 8080

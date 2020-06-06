@@ -1,8 +1,8 @@
 package common
 
 type ServerConfig struct {
-	Port string `yaml:"port" envconfig:"SERVER_PORT"`
-	Host string `yaml:"host" envconfig:"SERVER_HOST"`
+	Port string `yaml:"port" envconfig:"PORT"`
+	Host string `yaml:"host" envconfig:"HOST"`
 }
 
 type GRPCConfig struct {
@@ -21,6 +21,8 @@ type DatabaseConfig struct {
 }
 
 type GlobalConfig struct {
+	AppName  string         `yaml:"app-name" envconfig:"APP_NAME"`
+	BaseDir  string         `yaml:"base-dir" envconfig:"BASE_DIR"`
 	GRPC     GRPCConfig     `yaml:"grpc"`
 	Server   ServerConfig   `yaml:"server"`
 	Database DatabaseConfig `yaml:"database"`

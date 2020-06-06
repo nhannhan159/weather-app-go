@@ -11,10 +11,10 @@ import (
 func (app *App) initializeResources() {
 	app.Resources = &domain.Resources{
 		DaoManager:  dao.NewDaoManager(app.GlobalConfig.Database),
-		HTTPManager: http.NewHTTPManager(app.GlobalConfig.Server),
+		HTTPManager: http.NewHTTPManager(app.GlobalConfig),
 		GRPCManager: grpc.NewGRPCServerManager(app.GlobalConfig.GRPC),
-		GinLogger:   common.NewGinLogger(),
-		BizLogger:   common.NewBizLogger(),
+		GinLogger:   common.NewGinLogger(app.GlobalConfig),
+		BizLogger:   common.NewBizLogger(app.GlobalConfig),
 	}
 }
 
