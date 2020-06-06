@@ -4,10 +4,12 @@ services:
     image: weather-app:latest
     volumes:
       - ~/logs/weather-app:/logs/weather-app
-    links:
-      - mysql
+    environment:
+      DB_DSN: root:root@tcp(mysql:3306)/weather?charset=utf8
     ports:
       - 8080:8080
+    links:
+      - mysql
   zipkin-go:
     image: openzipkin/zipkin
     container_name: zipkin-go
