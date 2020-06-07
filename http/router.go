@@ -1,8 +1,15 @@
 package http
 
+import (
+	_ "github.com/nhannhan159/weather-app-go/docs"
+	"github.com/nhannhan159/weather-app-go/http/handler"
+)
+
 func (server *HTTPManager) initializeRouter() {
 	handlers := server.handlerCollection
 	router := server.engine
+
+	router.GET("/swagger/*any", handler.SwaggerHandler(server.config))
 
 	router.GET("/", handlers.IndexHandler.Handle)
 	router.GET("/user", handlers.UserHandler.Handle)

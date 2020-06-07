@@ -26,6 +26,16 @@ func NewCityHandler(cityService ICityService) *CityHandler {
 	}
 }
 
+// CityHandler.HandleFindAll godoc
+// @Summary Get city list
+// @Description get city list
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} model.City
+// @Failure 400 {object} handler.HTTPError
+// @Failure 404 {object} handler.HTTPError
+// @Failure 500 {object} handler.HTTPError
+// @Router /city [get]
 func (handler *CityHandler) HandleFindAll(ctx *gin.Context) {
 	res, err := handler.cityService.FindAll(handler.getResourcesFromContext(ctx))
 	if err != nil {
@@ -36,6 +46,18 @@ func (handler *CityHandler) HandleFindAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// CityHandler.HandleFindByID godoc
+// @Summary Get city by id
+// @Description get city by id
+// @ID get-city-by-int
+// @Accept  json
+// @Produce  json
+// @Param id path int true "City ID"
+// @Success 200 {object} model.City
+// @Failure 400 {object} handler.HTTPError
+// @Failure 404 {object} handler.HTTPError
+// @Failure 500 {object} handler.HTTPError
+// @Router /city/{id} [get]
 func (handler *CityHandler) HandleFindByID(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {

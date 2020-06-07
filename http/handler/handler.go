@@ -16,6 +16,11 @@ type baseRestHandler struct {
 	baseHandler
 }
 
+type HTTPError struct {
+	Code    int    `json:"code" example:"400"`
+	Message string `json:"message" example:"status bad request"`
+}
+
 func (handler *baseRestHandler) HandleFindAll(ctx *gin.Context) {
 	panic("not yet implemented")
 }
@@ -46,5 +51,9 @@ func (handler *baseHandler) getResourcesFromContext(ctx *gin.Context) *domain.Re
 }
 
 func (handler *baseHandler) handleBabRequest(ctx *gin.Context, err error) {
-	ctx.JSON(http.StatusBadRequest, map[string]string{"msg": err.Error()})
+	httpErr := HTTPError{
+		Code:    http.StatusBadRequest,
+		Message: err.Error(),
+	}
+	ctx.JSON(http.StatusBadRequest, httpErr)
 }

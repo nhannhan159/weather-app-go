@@ -1,0 +1,164 @@
+basePath: /api/v1
+definitions:
+  handler.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+  model.City:
+    properties:
+      country:
+        type: string
+      findName:
+        type: string
+      id:
+        type: integer
+      lat:
+        type: number
+      lon:
+        type: number
+      name:
+        type: string
+    type: object
+  model.Weather:
+    properties:
+      description:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      main:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is nhannhan159 go application.
+  license: {}
+  title: Weather app API
+  version: "1.0"
+paths:
+  /city:
+    get:
+      consumes:
+      - application/json
+      description: get city list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.City'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Get city list
+  /city/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get city by id
+      operationId: get-city-by-int
+      parameters:
+      - description: City ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.City'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Get city by id
+  /weather:
+    get:
+      consumes:
+      - application/json
+      description: get weather list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Weather'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Get weather list
+  /weather/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get weather by id
+      operationId: get-weather-by-int
+      parameters:
+      - description: Weather ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Weather'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.HTTPError'
+      summary: Get weather by id
+swagger: "2.0"
