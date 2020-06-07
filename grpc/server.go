@@ -4,6 +4,11 @@ import (
 	"log"
 	"net"
 
+	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpcZap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	grpcRecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	grpcCtxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	grpcOpentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	"github.com/nhannhan159/weather-app-go/common"
 	"github.com/nhannhan159/weather-app-go/domain"
 	"google.golang.org/grpc"
@@ -36,7 +41,20 @@ func (server *GRPCServerManager) Run() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.StreamInterceptor(grpcMiddleware.ChainStreamServer(
+			grpcCtxtags.StreamServerInterceptor(),
+			grpcOpentracing.StreamServerInterceptor(),
+			grpcZap.StreamServerInterceptor(server.appResources.GRPCLogger),
+			grpcRecovery.StreamServerInterceptor(),
+		)),
+		grpc.UnaryInterceptor(grpcMiddleware.ChainUnaryServer(
+			grpcCtxtags.UnaryServerInterceptor(),
+			grpcOpentracing.UnaryServerInterceptor(),
+			grpcZap.UnaryServerInterceptor(server.appResources.GRPCLogger),
+			grpcRecovery.UnaryServerInterceptor(),
+		)),
+	)
 	for _, handler := range server.handlers {
 		handler.RegisterServer(s)
 	}

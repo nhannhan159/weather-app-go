@@ -13,9 +13,11 @@ func (app *App) initializeResources() {
 		DaoManager:  dao.NewDaoManager(app.GlobalConfig.Database),
 		HTTPManager: http.NewHTTPManager(app.GlobalConfig),
 		GRPCManager: grpc.NewGRPCServerManager(app.GlobalConfig.GRPC),
-		GinLogger:   common.NewGinLogger(app.GlobalConfig),
-		BizLogger:   common.NewBizLogger(app.GlobalConfig),
+		GinLogger:   common.NewGinLogger(app.GlobalConfig).Sugar(),
+		BizLogger:   common.NewBizLogger(app.GlobalConfig).Sugar(),
+		GRPCLogger:  common.NewGRPCLogger(app.GlobalConfig),
 	}
+	common.InitializeTracer(app.GlobalConfig)
 }
 
 func (app *App) runResources() {

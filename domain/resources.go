@@ -8,4 +8,5 @@ type Resources struct {
 	GRPCManager IGRPCManager
 	GinLogger   *zap.SugaredLogger
 	BizLogger   *zap.SugaredLogger
+	GRPCLogger  *zap.Logger
 }

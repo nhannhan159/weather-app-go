@@ -50,6 +50,7 @@ func (server *HTTPManager) Run() {
 	// Initialize middleware
 	server.engine.Use(middleware.ResourcesMiddleware(server.appResources))
 	server.engine.Use(middleware.LoggerMiddleware())
+	server.engine.Use(middleware.TracerMiddleware()...)
 
 	// Initialize router
 	server.initializeRouter()

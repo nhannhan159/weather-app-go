@@ -20,10 +20,15 @@ type DatabaseConfig struct {
 	DSN     string `yaml:"dsn" envconfig:"DB_DSN"`
 }
 
+type TracingConfig struct {
+	ZipkinUrl string `yaml:"zipkin-url" envconfig:"ZIPKIN_URL"`
+}
+
 type GlobalConfig struct {
 	AppName  string         `yaml:"app-name" envconfig:"APP_NAME"`
 	BaseDir  string         `yaml:"base-dir" envconfig:"BASE_DIR"`
 	GRPC     GRPCConfig     `yaml:"grpc"`
 	Server   ServerConfig   `yaml:"server"`
 	Database DatabaseConfig `yaml:"database"`
+	Tracing  TracingConfig  `yaml:"tracing"`
 }
