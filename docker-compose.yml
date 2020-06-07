@@ -8,9 +8,11 @@ services:
       DB_DSN: root:root@tcp(mysql:3306)/weather?charset=utf8
     ports:
       - 8080:8080
-    links:
+    command: /scripts/wait-for-it.sh -t 0 mysql:3306 -- /scripts/wait-for-it.sh zipkin:9411 -- /go/bin/weather-app-go
+    depends_on:
       - mysql
-  zipkin-go:
+      - zipkin
+  zipkin:
     image: openzipkin/zipkin
     container_name: zipkin-go
     ports:

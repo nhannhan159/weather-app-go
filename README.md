@@ -7,7 +7,7 @@ Just for learning
 ## Install
 
 ```
-go get github.com/nhannhan159/weather-app
+go get github.com/nhannhan159/weather-app-go
 ```
 
 ## License
