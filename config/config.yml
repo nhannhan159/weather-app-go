@@ -1,7 +1,7 @@
 app-name: weather-app
 base-dir: /Users/tien.tan
 tracing:
-  zipkin_url: http://localhost:9411/api/v2/spans
+  zipkin-url: http://localhost:9411/api/v2/spans
 server:
   host: localhost
   port: 8080

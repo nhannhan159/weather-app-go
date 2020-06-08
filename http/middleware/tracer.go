@@ -1,15 +1,17 @@
 package middleware
 
 import (
-	"github.com/gin-contrib/opengintracing"
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 )
 
-func TracerMiddleware() gin.HandlersChain {
-	tracer := opentracing.GlobalTracer()
-	return []gin.HandlerFunc{
-		opengintracing.NewSpan(tracer, "start http request"),
-		opengintracing.InjectToHeaders(tracer, true),
+func TracerMiddleware() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		span, _ := opentracing.StartSpanFromContext(ctx, ctx.HandlerName())
+		defer func() {
+			go span.Finish()
+		}()
+
+		ctx.Next()
 	}
 }
